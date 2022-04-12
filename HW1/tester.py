@@ -1,7 +1,8 @@
-from main import  run
+from main import run
 
-inputs=["علی بد است، چرا که مرا زد.",
-        "کتاب آبی است."]
-
-for input in inputs:
-    print(input, " ==> ",run(input))
+with open("tests.txt", encoding="utf-8") as f:
+    for input in f:
+        if len(input) < 3:
+            continue
+        input = input[:-2]
+        print(input, " ==> ", run(input))
