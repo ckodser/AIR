@@ -4,6 +4,7 @@ from hazm import *
 
 
 punc = [".", "،", ":", "!", "؟", " "]
+tagger = POSTagger(model='resources/postagger.model')
 
 
 def CheraKe(input: str):
@@ -20,9 +21,7 @@ def baEs(input: str):
     if re.search("باعث", input) is None:
         return None, None, False
     else:
-        tagger = POSTagger(model='resources/postagger.model')
-        print(tagger.tag(word_tokenize('ما بسیار کتاب می‌خوانیم')))
-        exit(0)
+        print(tagger.tag(word_tokenize(input)))
         x = re.split("باعث", input)
         if len(x) != 2:
             return None, None, False
