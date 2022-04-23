@@ -17,4 +17,17 @@ with open("tests.txt", encoding="utf-8") as f:
                   end="   **  ")
         print()
 
+with open("bigtest.txt", encoding="utf-8") as f:
+    total = ""
+    for input in f:
+        if len(input) < 1:
+            continue
+        total += input + "\n"
+
+    input=total
+    print(input)
+    for qu in run(input):
+        print("question:", normalizer.normalize(qu["Question"]), "ans:", normalizer.normalize(qu["Answer"]))
+    print()
+
 
