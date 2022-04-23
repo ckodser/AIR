@@ -1,7 +1,7 @@
 import re
 import hazm
 from hazm import *
-from HW1.parsi_io.modules.number_extractor import NumberExtractor
+from parsi_io.modules.number_extractor import NumberExtractor
 
 extractor = NumberExtractor()
 punc = [".", "،", ":", "!", "؟", " "]

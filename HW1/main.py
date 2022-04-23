@@ -1,4 +1,4 @@
-from HW1.functions.CheraKe import CheraKe, baEs, color, number
+from functions.CheraKe import CheraKe, baEs, color, number
 
 all_functions = [CheraKe, baEs, color, number]
 
