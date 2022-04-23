@@ -12,10 +12,11 @@ normalizer = Normalizer()
 with open("colors.txt", encoding="utf-8") as f:
     for color in f:
         color=color.rstrip().lstrip()
-        all_colors.append(normalizer.normalize(color))
+        if len(color)>2:
+          all_colors.append(normalizer.normalize(color))
 
 print(len(all_colors))
-
+color_pattern="|".join(all_colors)
 def CheraKe(input: str):
     if re.search("چرا که", input) is None:
         return None, None, False
@@ -44,7 +45,12 @@ def baEs(input: str):
         return build_question("چه چیزی باعث" + x[1]), input, True
 
 def color(input: str):
-    return None, None, False
+    a=re.search(color_pattern, input)
+    if a is not None:
+      qu=build_question(re.sub(color_pattern, "چه رنگی", input, 1))
+      return qu, a.group(), True
+    else:
+      return None, None, False
 
 
 def third_person(verb: str):

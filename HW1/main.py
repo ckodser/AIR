@@ -1,6 +1,6 @@
-from functions.CheraKe import CheraKe, baEs
+from functions.CheraKe import CheraKe, baEs, color
 
-all_functions = [CheraKe, baEs]
+all_functions = [CheraKe, baEs, color]
 
 
 def run(input: str):
