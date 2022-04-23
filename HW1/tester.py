@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 import hazm
-from main import run
+from HW1.main import run
 from hazm import *
 
 normalizer = Normalizer()
