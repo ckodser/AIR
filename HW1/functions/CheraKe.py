@@ -1,7 +1,7 @@
 import re
 import hazm
 from hazm import *
-from HW1.parsi_io.modules.number_extractor import NumberExtractor
+from parsi_io.modules.number_extractor import NumberExtractor
 
 extractor = NumberExtractor()
 punc = [".", "،", ":", "!", "؟", " "]
@@ -58,7 +58,16 @@ def color(input: str):
 
 
 def number(input: str):
-    print(extractor.run('من در بیست و پنجمین روز فروردین سوار اتوبوس ۱۲ شدم.'))
+    all_numbers = extractor.run(input)
+    for number in all_numbers:
+        r = number['span'][1]
+        l = number['span'][0]
+        if len(input) > r and input[r] == ' ':
+            qu = build_question(input[:l] + "چند" + input[r:])
+            ans = input[l:r]
+            return qu, ans, True
+    return None, None, False
+
 
 def third_person(verb: str):
     if verb in third_person_verbs:
