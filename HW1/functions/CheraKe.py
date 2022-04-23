@@ -2,8 +2,10 @@ import re
 import hazm
 from hazm import *
 from parsi_io.modules.number_extractor import NumberExtractor
+from parsi_io.modules.time_extractions import TimeExtraction
 
-extractor = NumberExtractor()
+date_extractor = TimeExtraction()
+number_extractor = NumberExtractor()
 punc = [".", "،", ":", "!", "؟", " "]
 tagger = POSTagger(model='resources/postagger.model')
 stemmer = Stemmer()
@@ -58,9 +60,9 @@ def color(input: str):
 
 
 def number(input: str):
-    all_numbers = extractor.run(input)
-    questions=[]
-    answers=[]
+    all_numbers = number_extractor.run(input)
+    questions = []
+    answers = []
     for number in all_numbers:
         r = number['span'][1]
         l = number['span'][0]
@@ -69,6 +71,19 @@ def number(input: str):
             ans = input[l:r]
             questions.append(qu)
             answers.append(ans)
+    return questions, answers, True
+
+
+def date(input: str):
+    all_dates = date_extractor.run(input)['markers']['datetime']
+    questions = []
+    answers = []
+    for segment in all_dates:
+        answers.append(all_dates[segment])
+        inner_segment = segment[1:-1].split(",")
+        l = int(inner_segment[0])
+        r = int(inner_segment[1])
+        questions.append(input[:l] + "چه زمانی" + input[r:])
     return questions, answers, True
 
 
@@ -82,7 +97,7 @@ def third_person(verb: str):
         correct_form = correct_form[:-2] + "د"
         if correct_form[-2] == correct_form[-1]:
             correct_form = correct_form[:-1]
-    future_plo = "خواهند"+"|"+"خواهیم"+"|"+"خواهید"+"|"+"خواهم"+"|"+"خواهی"
+    future_plo = "خواهند" + "|" + "خواهیم" + "|" + "خواهید" + "|" + "خواهم" + "|" + "خواهی"
     future_single = "خواهد"
     correct_form = re.sub(future_plo, future_single, correct_form)
     return correct_form
