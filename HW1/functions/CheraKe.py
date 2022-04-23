@@ -83,7 +83,7 @@ def date(input: str):
         inner_segment = segment[1:-1].split(",")
         l = int(inner_segment[0])
         r = int(inner_segment[1])
-        questions.append(input[:l] + "چه زمانی" + input[r:])
+        questions.append(build_question(input[:l] + "چه زمانی" + input[r:]))
     return questions, answers, True
 
 
