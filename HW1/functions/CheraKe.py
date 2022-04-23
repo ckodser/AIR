@@ -53,7 +53,7 @@ def baEs(input: str):
 def color(input: str):
     a = re.search(color_pattern, input)
     if a is not None:
-        qu = build_question(re.sub(color_pattern, "چه رنگی", input, 1))
+        qu = build_question(re.sub(color_pattern, " چه رنگی ", input, 1))
         return qu, a.group(), True
     else:
         return None, None, False
