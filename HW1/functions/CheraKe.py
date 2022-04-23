@@ -59,14 +59,17 @@ def color(input: str):
 
 def number(input: str):
     all_numbers = extractor.run(input)
+    questions=[]
+    answers=[]
     for number in all_numbers:
         r = number['span'][1]
         l = number['span'][0]
-        if len(input) > r and input[r] == ' ':
+        if len(input) > r and input[r] in punc:
             qu = build_question(input[:l] + "چند" + input[r:])
             ans = input[l:r]
-            return qu, ans, True
-    return None, None, False
+            questions.append(qu)
+            answers.append(ans)
+    return questions, answers, True
 
 
 def third_person(verb: str):

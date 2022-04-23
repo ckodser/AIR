@@ -1,6 +1,6 @@
-from functions.CheraKe import CheraKe, baEs, color,number
+from functions.CheraKe import CheraKe, baEs, color, number
 
-all_functions = [CheraKe, baEs, color,number]
+all_functions = [CheraKe, baEs, color, number]
 
 
 def run(input: str):
@@ -10,7 +10,11 @@ def run(input: str):
         for part in spited:
             question, answer, solve = function(part)
             if solve:
-                output.append({"Question": question, "Answer": answer})
+                if question.__class__ == [].__class__:
+                    for i in range(len(question)):
+                        output.append({"Question": question[i], "Answer": answer[i]})
+                else:
+                    output.append({"Question": question, "Answer": answer})
     return output
 
 
