@@ -1,5 +1,5 @@
 import re
-from CheraKe import build_question
+from functions.CheraKe import build_question
 
 pos_patterns_first_cause = [
     '.*(دلا?یل|عل[تل]|عامل|از دلایل|از عوامل|از علل|چرایی).*(است|هست|هستند|میباشد|می باشد|میباشند|می باشند|بود|بودند|باشد|باشند)',
@@ -8,12 +8,12 @@ pos_patterns_first_cause = [
     '.*(نتایج).*(میتوان|می توان).*(اشاره کرد|برشمرد|بر شمرد).*',
     '.*(منجر به|سبب|منجربه).*(می شوند|میشوند|میشود|می شود|شد|شوند|شود).*'
 ]
-pos_patterns_first_cause_question = [
-    '.*(دلا?یل|عل[تل]|عامل|از دلایل|از عوامل|از علل|چرایی).*(است|هست|هستند|میباشد|می باشد|میباشند|می باشند|بود|بودند|باشد|باشند)',
-    '(را نتیجه|رانتیجه).*(میدهند|میدهد|خواهند داد|خواهد داد|می دهد|می دهند|داد|داده|داده اند).*',
-    '.*(منجر به|موجب|باعث|منجربه).*',
-    '.*(نتایج).*(میتوان|می توان).*(اشاره کرد|برشمرد|بر شمرد).*',
-    '.*(منجر به|سبب|منجربه).*(می شوند|میشوند|میشود|می شود|شد|شوند|شود).*'
+question_seperator = [
+    '(دلا?یل|عل[تل]|عامل|از دلایل|از عوامل|از علل|چرایی|است|هست|هستند|میباشد|می باشد|میباشند|می باشند|بود|بودند|باشد|باشند)',
+    '(را نتیجه|رانتیجه|میدهند|میدهد|خواهند داد|خواهد داد|می دهد|می دهند|داد|داده|داده اند)',
+    '(منجر به|موجب|باعث|منجربه)',
+    '(نتایج|میتوان|می توان|اشاره کرد|برشمرد|بر شمرد)',
+    '(منجر به|سبب|منجربه|می شوند|میشوند|میشود|می شود|شد|شوند|شود)'
 ]
 
 pos_patterns_second_cause = [
@@ -29,9 +29,11 @@ for x in pos_patterns_first_cause:
 def causeEffect(input: str):
     questions = []
     answers = []
-    return questions, answers, True
-    for pattern in pos_patterns:
+    for i, pattern in enumerate(pos_patterns_first_cause):
         if re.search(pattern, input) != None:
-            questions.append(build_question("علت " + question_part + "چیست"))
-            answers.append(answer_part)
+            input_pro = re.sub(question_seperator[i], '*$*', input).split('*$*')
+            if len(input_pro) == 2:
+                question_part, answer_part = input_pro[1], input_pro[0]
+                questions.append(build_question("علت " + question_part + "چیست"))
+                answers.append(answer_part)
     return questions, answers, True
