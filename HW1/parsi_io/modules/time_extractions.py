@@ -15,10 +15,10 @@ class TimeExtraction(object):
         markers = self.model.extract_marker(text)
         result['markers'] = markers
 
-        values = self.model.extract_value(text)
-        result['values'] = values
-
-        ners = self.model.extract_ner(text)
-        result['ner'] = ners
+        # values = self.model.extract_value(text)
+        # result['values'] = values
+        #
+        # ners = self.model.extract_ner(text)
+        # result['ner'] = ners
 
         return result
