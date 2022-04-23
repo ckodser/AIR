@@ -22,8 +22,6 @@ pos_patterns_second_cause = [
     '.*(دلایل|علل|عوامل).*(میتوان|می توان).*(اشاره کرد|برشمرد|بر شمرد).*',
     '.*(اگر|چنانچه|چنان چه|در صورت|درصورت).*'
 ]
-for x in pos_patterns_first_cause:
-    print(x)
 
 
 def causeEffect(input: str):
