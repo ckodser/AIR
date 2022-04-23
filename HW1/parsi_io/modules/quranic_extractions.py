@@ -407,7 +407,7 @@ class QuranicExtraction(object):
         "Read quranic data"
         quran_df_index = pd.read_csv('quranic_extractions/data/Quran.txt', names=['id', 'text'], sep="\t")['id']
         self.quran_df = pd.read_csv('quranic_extractions/data/Quran.txt', sep="##|\t", names=['surah', 'verse', 'text'],
-                               engine='python')
+                                    engine='python')
         self.quran_df.index = quran_df_index
 
 

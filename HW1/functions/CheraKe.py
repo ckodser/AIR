@@ -1,22 +1,25 @@
 import re
 import hazm
 from hazm import *
+from HW1.parsi_io.modules.number_extractor import NumberExtractor
 
+extractor = NumberExtractor()
 punc = [".", "،", ":", "!", "؟", " "]
 tagger = POSTagger(model='resources/postagger.model')
 stemmer = Stemmer()
 third_person_verbs = ["است", "هست"]
-all_colors=[]
+all_colors = []
 normalizer = Normalizer()
 
 with open("colors.txt", encoding="utf-8") as f:
     for color in f:
-        color=color.rstrip().lstrip()
-        if len(color)>2:
-          all_colors.append(" "+normalizer.normalize(color)+" ")
+        color = color.rstrip().lstrip()
+        if len(color) > 2:
+            all_colors.append(" " + normalizer.normalize(color) + " ")
 
-print(len(all_colors))
-color_pattern="|".join(all_colors)
+color_pattern = "|".join(all_colors)
+
+
 def CheraKe(input: str):
     if re.search("چرا که", input) is None:
         return None, None, False
@@ -44,14 +47,18 @@ def baEs(input: str):
 
         return build_question("چه چیزی باعث" + x[1]), input, True
 
-def color(input: str):
-    a=re.search(color_pattern, input)
-    if a is not None:
-      qu=build_question(re.sub(color_pattern, "چه رنگی", input, 1))
-      return qu, a.group(), True
-    else:
-      return None, None, False
 
+def color(input: str):
+    a = re.search(color_pattern, input)
+    if a is not None:
+        qu = build_question(re.sub(color_pattern, "چه رنگی", input, 1))
+        return qu, a.group(), True
+    else:
+        return None, None, False
+
+
+def number(input: str):
+    print(extractor.run('من در بیست و پنجمین روز فروردین سوار اتوبوس ۱۲ شدم.'))
 
 def third_person(verb: str):
     if verb in third_person_verbs:
