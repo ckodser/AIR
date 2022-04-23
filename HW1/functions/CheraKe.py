@@ -82,8 +82,7 @@ def third_person(verb: str):
         correct_form = correct_form[:-2] + "د"
         if correct_form[-2] == correct_form[-1]:
             correct_form = correct_form[:-1]
-    future_plo = "خواهند"+"|"+"خواهیم"+"خواهید"+"|"+"خواهم"+"|"+"خواهی"
-    print(future_plo)
+    future_plo = "خواهند"+"|"+"خواهیم"+"|"+"خواهید"+"|"+"خواهم"+"|"+"خواهی"
     future_single = "خواهد"
     correct_form = re.sub(future_plo, future_single, correct_form)
     return correct_form
