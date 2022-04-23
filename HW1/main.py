@@ -1,6 +1,6 @@
 from functions.CheraKe import CheraKe, baEs, color, number, date
-
-all_functions = [CheraKe, baEs, color, number, date]
+from functions.causeEffect import causeEffect
+all_functions = [CheraKe, baEs, color, number, date, causeEffect]
 
 
 def run(input: str):
