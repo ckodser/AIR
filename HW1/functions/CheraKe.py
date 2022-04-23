@@ -13,7 +13,7 @@ with open("colors.txt", encoding="utf-8") as f:
     for color in f:
         color=color.rstrip().lstrip()
         if len(color)>2:
-          all_colors.append(normalizer.normalize(color))
+          all_colors.append(" "+normalizer.normalize(color)+" ")
 
 print(len(all_colors))
 color_pattern="|".join(all_colors)
