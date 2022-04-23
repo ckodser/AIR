@@ -5,7 +5,16 @@ from hazm import *
 punc = [".", "،", ":", "!", "؟", " "]
 tagger = POSTagger(model='resources/postagger.model')
 stemmer = Stemmer()
-third_person_verbs=["است","هست"]
+third_person_verbs = ["است", "هست"]
+all_colors=[]
+normalizer = Normalizer()
+
+with open("colors.txt", encoding="utf-8") as f:
+    for color in f:
+        color=color.rstrip().lstrip()
+        all_colors.append(normalizer.normalize(color))
+
+print(len(all_colors))
 
 def CheraKe(input: str):
     if re.search("چرا که", input) is None:
@@ -28,26 +37,29 @@ def baEs(input: str):
         for i, p in enumerate(tagged):
             verb, part = p
             if part == "V":
-                verb=verb.replace("_", " ")
+                verb = verb.replace("_", " ")
                 correct_form = third_person(verb)
                 x[1] = x[1].replace(verb, correct_form)
 
         return build_question("چه چیزی باعث" + x[1]), input, True
 
+def color(input: str):
+    return None, None, False
+
 
 def third_person(verb: str):
     if verb in third_person_verbs:
-      return verb
+        return verb
     correct_form = stemmer.stem(verb)
     if correct_form[-1] != "د":
         correct_form = correct_form + "د"
-    elif correct_form[-2]=='ن':
+    elif correct_form[-2] == 'ن':
         correct_form = correct_form[:-2] + "د"
-        if correct_form[-2]==correct_form[-1]:
-          correct_form=correct_form[:-1]
-    future_plo="خواهند"
-    future_single="خواهد"
-    correct_form=re.sub(future_plo, future_single, correct_form)
+        if correct_form[-2] == correct_form[-1]:
+            correct_form = correct_form[:-1]
+    future_plo = "خواهند"
+    future_single = "خواهد"
+    correct_form = re.sub(future_plo, future_single, correct_form)
     return correct_form
 
 
