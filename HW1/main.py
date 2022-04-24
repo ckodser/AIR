@@ -28,4 +28,4 @@ def run(input: str):
 
 def split_sentences(input: str):
     stop_markers = "?.!.!؟"
-    return re.findall(fr'.+(?:[{stop_markers}]|$)', input)
+    return [sentence.strip() for sentence in re.findall(fr'.+?(?:[{stop_markers}]|$)', input) if sentence.strip()]

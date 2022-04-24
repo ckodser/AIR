@@ -1,7 +1,8 @@
 import re
+
 import hazm
 
-from .base import build_question, third_person_verbs, stemmer, tagger
+from .base import build_question, tagger, third_person, get_in_question, normalizer
 
 chera_ke_pattern = 'چرا که|زیرا'
 
@@ -23,28 +24,14 @@ def baEs(input: str):
         x = re.split("باعث", input)
         if len(x) != 2:
             return None, None, False
+        x[1] = normalizer.normalize(x[1])
         tagged = tagger.tag(hazm.word_tokenize(x[1]))
-        for i, p in enumerate(tagged):
+        words = []
+        for p in tagged:
             verb, part = p
             if part == "V":
                 verb = verb.replace("_", " ")
-                correct_form = third_person(verb)
-                x[1] = x[1].replace(verb, correct_form)
+                verb = third_person(verb)
+            words.append(verb)
 
-        return build_question("چه چیزی باعث" + x[1]), input, True
-
-
-def third_person(verb: str):
-    if verb in third_person_verbs:
-        return verb
-    correct_form = stemmer.stem(verb)
-    if correct_form[-1] != "د":
-        correct_form = correct_form + "د"
-    elif correct_form[-2] == 'ن':
-        correct_form = correct_form[:-2] + "د"
-        if correct_form[-2] == correct_form[-1]:
-            correct_form = correct_form[:-1]
-    future_plo = "خواهند" + "|" + "خواهیم" + "|" + "خواهید" + "|" + "خواهم" + "|" + "خواهی"
-    future_single = "خواهد"
-    correct_form = re.sub(future_plo, future_single, correct_form)
-    return correct_form
+        return build_question(f"چه {get_in_question(x[0].strip())} باعث " + ' '.join(words)), input, True
