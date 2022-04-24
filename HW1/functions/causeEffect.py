@@ -1,5 +1,6 @@
 import re
-from functions.CheraKe import build_question
+
+from .base import build_question
 
 pos_patterns_first_cause = [
     '.*(دلا?یل|عل[تل]|عامل|از دلایل|از عوامل|از علل|چرایی).*(است|هست|هستند|میباشد|می باشد|میباشند|می باشند|بود|بودند|باشد|باشند)',

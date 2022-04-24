@@ -1,0 +1,2 @@
+hazm
+git+https://github.com/mahdi-jfri/parsi.io.git@1.2

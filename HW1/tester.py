@@ -1,7 +1,6 @@
-from __future__ import unicode_literals
-import hazm
+from hazm import Normalizer
+
 from main import run
-from hazm import *
 
 normalizer = Normalizer()
 with open("tests.txt", encoding="utf-8") as f:
@@ -11,10 +10,12 @@ with open("tests.txt", encoding="utf-8") as f:
             continue
         input = input[:-2]
         total += input + "\n"
-        print(input, " ==> ", end="")
+        print(input, " ==> ")
         for qu in run(input):
-            print("question:", normalizer.normalize(qu["Question"]), "ans:", normalizer.normalize(qu["Answer"]),
-                  end="   **  fn_name ===> " + qu['fn_name'])
+            print('question:', normalizer.normalize(qu["Question"]))
+            print('ans:', normalizer.normalize(qu["Answer"]))
+            print('fn_name:', qu['fn_name'])
+            print('*' * 10)
         print()
 
 # with open("bigtest.txt", encoding="utf-8") as f:

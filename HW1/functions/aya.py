@@ -1,8 +1,6 @@
-from hazm import *
+from .base import tagger, lemmatizer
+import hazm
 
-from functions.CheraKe import tagger
-
-lemmatizer = Lemmatizer()
 
 n_start_verbs = [
     'نوشتن',
@@ -53,8 +51,8 @@ def aya(input: str):
     answers = []
     try:
         all_sentences = []
-        tagged = tagger.tag(word_tokenize(input))
-        index_list = [i[0] for i in list(filter(lambda i: i[1][1] == 'V', enumerate(tagged)))]
+        tagged = tagger.tag(hazm.word_tokenize(input))
+        index_list = [i[0] for i in list(filter(lambda i: i[1][1] == 'V', enumerate(tagged)))][:1]
         for i in range(len(index_list)):
             res = ''
             if i != 0:
@@ -63,10 +61,8 @@ def aya(input: str):
                 sentences = tagged[0:index_list[i] + 1]
             for word_index, word in enumerate(sentences):
                 if word_index == len(sentences) - 1:
-                    print(get_positive_verb(word[0]))
                     res += get_positive_verb(word[0])
                 else:
-                    print(word[0])
                     res += word[0] + ' '
             all_sentences.append(res.strip())
 
