@@ -6,8 +6,9 @@ from functions.date import date
 from functions.number import number
 from functions.color import color
 from functions.causeEffect import causeEffect
+from functions.subject_object import subject_object
 
-all_functions = [CheraKe, baEs, color, number, date, causeEffect, aya]
+all_functions = [subject_object, CheraKe, baEs, color, number, date, causeEffect, aya]
 
 
 def run(input: str):
