@@ -49,9 +49,9 @@ def create_answer(input: str, verb: str):
 
 
 def aya(input: str):
+    questions = []
+    answers = []
     try:
-        questions = []
-        answers = []
         all_sentences = []
         tagged = tagger.tag(word_tokenize(input))
         index_list = [i[0] for i in list(filter(lambda i: i[1][1] == 'V', enumerate(tagged)))]
@@ -80,4 +80,4 @@ def aya(input: str):
         return questions, answers, True
     except Exception as e:
         print(e)
-        return [], [], False
+        return questions, answers, False
