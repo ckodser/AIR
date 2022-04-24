@@ -1,6 +1,7 @@
 import re
 
 from .base import build_question
+from .base import punc
 
 pos_patterns_first_cause = [
     '.*(دلا?یل|عل[تل]|عامل|از دلایل|از عوامل|از علل|چرایی).*(است|هست|هستند|میباشد|می باشد|میباشند|می باشند|بود|بودند|باشد|باشند)',
@@ -44,7 +45,7 @@ def causeEffect(input: str):
         if pattern is not None and re.search(pattern, input) != None:
             input_pro = re.sub(question_seperator[i], '*$*', input).split('*$*')
             for i, part in enumerate(input_pro):
-                if len(part) <= 1:
+                if len(part.rstrip(punc).lstrip(punc)) <= 1:
                     input_pro.pop(i)
 
             if len(input_pro) == 2:
