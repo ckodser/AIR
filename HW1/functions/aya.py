@@ -53,6 +53,12 @@ def aya(input: str):
         all_sentences = []
         tagged = tagger.tag(hazm.word_tokenize(input))
         index_list = [i[0] for i in list(filter(lambda i: i[1][1] == 'V', enumerate(tagged)))][:1]
+        verb_count=0
+        for word, pos in tagged:
+            if pos=='V':
+              verb_count+=1
+        if verb_count>1:
+          return None, None, False
         for i in range(len(index_list)):
             res = ''
             if i != 0:
