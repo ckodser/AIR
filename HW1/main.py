@@ -1,6 +1,8 @@
+from functions.aya import aya
 from functions.CheraKe import CheraKe, baEs, color, number, date
 from functions.causeEffect import causeEffect
-all_functions = [CheraKe, baEs, color, number, date, causeEffect]
+
+all_functions = [CheraKe, baEs, color, number, date, causeEffect, aya]
 
 
 def run(input: str):
@@ -12,9 +14,9 @@ def run(input: str):
             if solve:
                 if question.__class__ == [].__class__:
                     for i in range(len(question)):
-                        output.append({"Question": question[i], "Answer": answer[i]})
+                        output.append({"Question": question[i], "Answer": answer[i], 'fn_name': function.__name__})
                 else:
-                    output.append({"Question": question, "Answer": answer})
+                    output.append({"Question": question, "Answer": answer, 'fn_name': function.__name__})
     return output
 
 

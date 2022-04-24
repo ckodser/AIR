@@ -14,7 +14,7 @@ with open("tests.txt", encoding="utf-8") as f:
         print(input, " ==> ", end="")
         for qu in run(input):
             print("question:", normalizer.normalize(qu["Question"]), "ans:", normalizer.normalize(qu["Answer"]),
-                  end="   **  ")
+                  end="   **  fn_name ===> " + qu['fn_name'])
         print()
 
 # with open("bigtest.txt", encoding="utf-8") as f:
