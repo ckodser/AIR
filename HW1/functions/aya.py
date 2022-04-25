@@ -1,6 +1,5 @@
-from .base import tagger, lemmatizer
+from .base import tagger, lemmatizer, is_third_person
 import hazm
-
 
 n_start_verbs = [
     'نوشتن',
@@ -49,37 +48,21 @@ def create_answer(input: str, verb: str):
 def aya(input: str):
     questions = []
     answers = []
-    try:
-        all_sentences = []
-        tagged = tagger.tag(hazm.word_tokenize(input))
-        index_list = [i[0] for i in list(filter(lambda i: i[1][1] == 'V', enumerate(tagged)))][:1]
-        verb_count=0
-        for word, pos in tagged:
-            if pos=='V':
-              verb_count+=1
-        if verb_count>1:
-          return None, None, False
-        for i in range(len(index_list)):
-            res = ''
-            if i != 0:
-                sentences = tagged[index_list[i - 1] + 1:index_list[i] + 1]
-            else:
-                sentences = tagged[0:index_list[i] + 1]
-            for word_index, word in enumerate(sentences):
-                if word_index == len(sentences) - 1:
-                    res += get_positive_verb(word[0])
-                else:
-                    res += word[0] + ' '
-            all_sentences.append(res.strip())
+    tagged = tagger.tag(hazm.word_tokenize(input))
+    index_list = [i[0] for i in list(filter(lambda i: i[1][1] == 'V', enumerate(tagged)))]
+    if len(index_list) != 1 or not is_third_person(tagged[index_list[0]][0]):
+        return None, None, False
+    words = tagged[:index_list[0] + 1]
+    res = ''
+    for word_index, (word, pos) in enumerate(words):
+        if word_index == len(words) - 1:
+            res += get_positive_verb(word)
+        else:
+            res += word + ' '
+    q = create_question(res)
+    verb = list(filter(lambda i: i[1] == 'V', tagged))[0][0]
+    ans = create_answer(input, verb)
+    questions.append(q)
+    answers.append(ans)
 
-        for sentence in all_sentences:
-            q = create_question(sentence)
-            verb = list(filter(lambda i: i[1] == 'V', tagged))[0][0]
-            ans = create_answer(input, verb)
-            questions.append(q)
-            answers.append(ans)
-
-        return questions, answers, True
-    except Exception as e:
-        print(e)
-        return questions, answers, False
+    return questions, answers, True
