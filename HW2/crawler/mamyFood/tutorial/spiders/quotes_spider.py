@@ -17,12 +17,12 @@ class QuotesSpider(scrapy.Spider):
         for link in response.xpath('//article[@id="Table"]/a/@href').extract():
             food = response.urljoin(link)
             foods_link.append(food)
-        print(len(foods_link))
+        print("crawl for link", self.page, len(foods_link))
         for step, food in enumerate(foods_link):
             yield scrapy.Request(food, callback=self.parser_food_page)
 
         if self.page == 1:
-            for page in range(2, 154):
+            for page in range(2, 40):
                 if page < 10:
                     pagetext = "0" + str(page)
                 else:
@@ -50,7 +50,7 @@ class QuotesSpider(scrapy.Spider):
                     'header$htxtUPassword': "",
                     'hfScroll': '1',
                     'mami_id': "",
-                    'ddlPageSize': '42',
+                    'ddlPageSize': '168',
                     'footer$txtNews': "",
                     'txtCellPhoneforEbook': ""}
 
