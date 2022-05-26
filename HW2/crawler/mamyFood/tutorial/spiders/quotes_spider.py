@@ -4,35 +4,38 @@ import re
 
 
 class QuotesSpider(scrapy.Spider):
-    name = "WIKIcookbook"
+    name = "MamyFood"
 
     start_urls = [
-        'https://fa.wikibooks.org/wiki/%DA%A9%D8%AA%D8%A7%D8%A8_%D8%A2%D8%B4%D9%BE%D8%B2%DB%8C/%D9%81%D9%87%D8%B1%D8%B3%D8%AA_%D8%BA%D8%B0%D8%A7%D9%87%D8%A7%DB%8C_%D9%85%D8%AD%D9%84%DB%8C_%D8%A7%DB%8C%D8%B1%D8%A7%D9%86'
+        'https://mamifood.org/cooking-training/recipe/15280/%D8%B7%D8%B1%D8%B2-%D8%AA%D9%87%DB%8C%D9%87-%D8%A7%D8%B3%D8%AA%D8%A7%D9%86%D8%A8%D9%88%D9%84%DB%8C-%D9%BE%D9%84%D9%88'
     ]
 
     def parse(self, response):
-        wikis = []
-        for link_sec in response.css('.mw-parser-output'):
-            link_sec = link_sec.css("ol")
+        yield scrapy.Request(response.url, callback=self.parser_food_page)
+        return
+        foods = []
+        for link_sec in response.css('.Tabel'):
+            link_sec = link_sec.css("a")
+            print(link_sec)
             for links in link_sec.css("li"):
-                wiki = response.urljoin(links.css("a::attr(href)").get())
-                wikis.append(wiki)
+                food = response.urljoin(links.css("a::attr(href)").get())
+                food.append(food)
 
-        for step, wiki in enumerate(wikis):
-            yield scrapy.Request(wiki, callback=self.parser_wiki_page)
+        for step, food in enumerate(foods):
+            yield scrapy.Request(food, callback=self.parser_food_page)
 
-    def parser_wiki_page(self, response):
-        name = response.xpath('//h1[@id="firstHeading"]/text()').get()
-        name = re.sub("کتاب آشپزی/", "", name)
-        print("wiki:", name)
+    def parser_food_page(self, response):
+        name = response.xpath('//span[@id="lbltitr"]/text()').get()
+        name = re.sub("طرز تهیه", "", name)
+        print("mamy:", name)
         js = {"name": name, "url": response.url}
-        text = ""
-        for step, e in enumerate(response.css('div#mw-content-text>div>p')):
-            para = e.get()
-            text += para
-        js["Preparation"] = text
         js["ingredients"] = []
-        for step, e in enumerate(response.css('div#mw-content-text>div>ol>li')):
-            para = e.get()
-            js["ingredients"].append(para)
+        for e in response.css('.dotbetween'):
+            ingredient = e.css('.btnCustomer').xpath('text()').extract()[0]
+            amount = e.css(".amount").xpath('text()').extract()[0]
+            js["ingredients"].append(ingredient + " " + amount)
+        js["Preparation"] = ""
+        for e in response.css('.content'):
+            text=e.css("p").xpath('text()').extract()
+            js["Preparation"] += "\n".join(text)
         yield js
