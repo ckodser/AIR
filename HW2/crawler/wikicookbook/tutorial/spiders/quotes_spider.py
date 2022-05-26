@@ -35,14 +35,18 @@ class QuotesSpider(scrapy.Spider):
           if e.root.tag=="p":
             js["Preparation"]+="\n".join(e.xpath("text()").extract())
           if e.root.tag=="ol":
-            js["ingredients"]=e.xpath("//li/text()").extract()
+            js["ingredients"]=e.xpath("li/text()").extract()
           if e.root.tag=="h2":
             h=e.xpath('span[@class="mw-headline"]/text()').extract()
             if len(h)>=1:
               h=h[0]
               if h.startswith("دستور شماره"):
-                if len(js["Preparation"])>0:
+                if not h.startswith("دستور شماره یک"):
+                  print("YIELD")
                   yield js
-                  js["Preparation"] = ""
-                  js["ingredients"] = []
+                js["Preparation"] = ""
+                js["ingredients"] = []
+              if h.startswith("جستارهای وابسته"):
+                break
+        print("YIELD")
         yield js
