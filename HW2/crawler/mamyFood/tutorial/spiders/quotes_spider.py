@@ -36,6 +36,8 @@ class QuotesSpider(scrapy.Spider):
             js["ingredients"].append(ingredient + " " + amount)
         js["Preparation"] = ""
         for e in response.css('.content'):
-            text=e.css("p").xpath('text()').extract()
+            text = e.css("p").xpath('text()').extract()
             js["Preparation"] += "\n".join(text)
+        js['main_group'] = response.xpath('//a[@id="lnkGName"]/text()').extract()[0]
+        js['sub_group'] = response.xpath('//a[@id="lnkSGName"]/text()').extract()[0]
         yield js
