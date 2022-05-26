@@ -35,4 +35,6 @@ class QuotesSpider(scrapy.Spider):
         for step, e in enumerate(response.css('div#mw-content-text>div>ol>li')):
             para = e.get()
             js["ingredients"].append(para)
+
+        js['tags'] = response.xpath('//div[@id="mw-normal-catlinks"]/ul/li/a/text()').extract()
         yield js
