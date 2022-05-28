@@ -33,9 +33,9 @@ class QuotesSpider(scrapy.Spider):
         js["ingredients"] = []
         for e in response.xpath('//div[@class="mw-parser-output"]/p|//div[@class="mw-parser-output"]/ul/li|//div[@class="mw-parser-output"]/h2|//div[@class="mw-parser-output"]/ol'):
           if e.root.tag=="p" or e.root.tag=="li":
-            js["Preparation"]+="\n".join(e.xpath("text()").extract())+"\n"
+            js["Preparation"]+="".join(e.extract())+" "
           if e.root.tag=="ol":
-            js["ingredients"]+=e.xpath("li/text()").extract()
+            js["ingredients"]+=e.xpath("li").extract()
           if e.root.tag=="h2":
             h=e.xpath('span[@class="mw-headline"]/text()').extract()
             if len(h)>=1:
