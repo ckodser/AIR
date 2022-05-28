@@ -31,11 +31,11 @@ class QuotesSpider(scrapy.Spider):
         js = {"name": name, "url": response.url, "tags":response.xpath('//div[@id="mw-normal-catlinks"]/ul/li/a/text()').extract()}
         js["Preparation"] = ""
         js["ingredients"] = []
-        for e in response.xpath('//div[@class="mw-parser-output"]/p|//div[@class="mw-parser-output"]/h2|//div[@class="mw-parser-output"]/ol'):
-          if e.root.tag=="p":
-            js["Preparation"]+="\n".join(e.xpath("text()").extract())
+        for e in response.xpath('//div[@class="mw-parser-output"]/p|//div[@class="mw-parser-output"]/ul/li|//div[@class="mw-parser-output"]/h2|//div[@class="mw-parser-output"]/ol'):
+          if e.root.tag=="p" or e.root.tag=="li":
+            js["Preparation"]+="\n".join(e.xpath("text()").extract())+"\n"
           if e.root.tag=="ol":
-            js["ingredients"]=e.xpath("li/text()").extract()
+            js["ingredients"]+=e.xpath("li/text()").extract()
           if e.root.tag=="h2":
             h=e.xpath('span[@class="mw-headline"]/text()').extract()
             if len(h)>=1:
